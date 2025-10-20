@@ -12,11 +12,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        // $this->middleware('auth:api')->except('index', 'show');
-    }
-
     public function index(): JsonResource
     {
         $posts = Post::paginate(3);
@@ -28,8 +23,8 @@ class PostController extends Controller
     {
 
         $data = $request->validated();
-        dump(auth()->user());
-        $data['user_id'] = auth()->user();
+
+        $data['user_id'] = auth()->user()->id;
 
         $post = Post::create($data);
 

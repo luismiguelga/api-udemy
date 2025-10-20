@@ -3,4 +3,4 @@
 use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('posts', PostController::class)->names('api.v1.posts');
+Route::apiResource('posts', PostController::class)->middleware('auth:api')->names('api.v1.posts');
