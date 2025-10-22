@@ -13,6 +13,15 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Vue --}}
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+        {{-- Axios --}}
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+        {{-- Sweet alert --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -32,5 +41,6 @@
                 {{ $slot }}
             </main>
         </div>
+        @stack('js')
     </body>
 </html>
