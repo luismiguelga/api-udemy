@@ -99,14 +99,9 @@
             <span>@{{ showForm.client }}</span>
           </h1>
           <h1>
-            <span>Cliente_id:</span>
+            <span>Cliente_id: </span>
             <span>@{{ showForm.client_id }}</span>
           </h1>
-          <h1>
-            <span>Client_secret:</span>
-            <span>@{{ showForm.client_secret }}</span>
-          </h1>
-
         </div>
         <x-slot name="footer">
           <button type="button" v-on:click="showForm.open = false"
@@ -150,7 +145,7 @@
         },
         methods: {
           index() {
-            axios.get('api/oauth/clients')
+            axios.get('oauth/clients')
               .then(response => {
                 this.clients = response.data
               })
@@ -158,17 +153,18 @@
           async store() {
             this.createForm.disabled = true;
             try {
-              const response = await axios.post('api/oauth/clients', this.createForm, {
+              const response = await axios.post('oauth/clients', this.createForm, {
                 headers: {
                   'Accept': 'application/json'
                 }
               });
+              console.log(response.data);
 
               this.createForm.name = ''
               this.createForm.redirect_uris = ''
               this.createForm.errors = []
 
-              Swal.fire('Creado', 'El cliente fue creado correctamente', 'success')
+              Swal.fire('Creado', 'El cliente fue creado correctamente, el cliente_secret es: ' + response.data, 'success')
               this.index();
 
             } catch (error) {
@@ -186,7 +182,7 @@
               confirmButtonText: "Si, estoy seguro"
             }).then((result) => {
               if (result.isConfirmed) {
-                axios.delete('api/oauth/clients/' + client)
+                axios.delete('oauth/clients/' + client)
                   .then(() => {
                     Swal.fire("Eliminado!", "Se elimilo el cliente correctamente", "success");
                     this.index();
@@ -196,7 +192,7 @@
           },
           edit(client) {
             this.editForm.open = true
-            axios.get('api/oauth/clients/' + client)
+            axios.get('oauth/clients/' + client)
               .then(response => {
                 this.editForm.id = response.data.id
                 this.editForm.name = response.data.name
@@ -205,7 +201,7 @@
           },
           async update(client) {
             try {
-              const respuesta = await axios.put('api/oauth/clients/' + client, this.editForm, {
+              const respuesta = await axios.put('oauth/clients/' + client, this.editForm, {
                   headers: {
                     'Accept': 'application/json'
                   }
@@ -215,19 +211,18 @@
 
                   this.index();
                 })
-                this.editForm.open = false
+              this.editForm.open = false
             } catch (error) {
               this.editForm.errors = error.response?.data?.errors || []
             }
           },
           show(client) {
             this.showForm.open = true
-            axios.get('api/oauth/clients/show/' + client)
+            axios.get('oauth/clients/show/' + client)
               .then(response => {
                 this.showForm.client = response.data.name;
                 this.showForm.client_id = response.data.id;
                 this.showForm.client_secret = response.data.secret;
-                console.log(response);
               })
           }
         },

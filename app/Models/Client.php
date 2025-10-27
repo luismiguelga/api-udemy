@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Passport\Client as PassportClient;
 
 class Client extends PassportClient
@@ -14,8 +14,13 @@ class Client extends PassportClient
         'secret',
         'provider',
         'redirect_uris',
-        'grant_type',
-        'revoked'
+        'grant_types',
+        'revoked',
     ];
-}
 
+    protected $casts = [
+        'redirect_uris' => 'array',
+        'grant_types' => 'array',
+    ];
+
+}

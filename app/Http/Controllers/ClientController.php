@@ -20,7 +20,7 @@ class ClientController extends Controller
         return view('clients.index');
     }
 
-    public function store(Request $request): void
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -31,13 +31,15 @@ class ClientController extends Controller
 
         $user = auth()->user();
 
-        app(ClientRepository::class)->createAuthorizationCodeGrantClient(
+        $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
             user: $user,
             name: $response['name'],
             redirectUris: [$response['redirect_uris']],
-            confidential: false,
+            confidential: true,
             enableDeviceFlow: true
         );
+
+        return response()->json($client->plain_secret);
     }
 
     public function destroy(Client $client)
@@ -59,13 +61,14 @@ class ClientController extends Controller
 
         $client->update([
             'name' => $request->input('name'),
-            'redirect_uris' => $request->input('redirect_uris'),
+            'redirect_uris' => [$request->input('redirect_uris')],
         ]);
     }
 
-    public function show(Client $client)
+    public function show(Client $client): JsonResponse
     {
         $client->makeVisible('secret');
+
         return response()->json($client);
     }
 }
