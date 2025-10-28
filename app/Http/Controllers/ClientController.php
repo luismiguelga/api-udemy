@@ -42,7 +42,7 @@ class ClientController extends Controller
         return response()->json($client->plain_secret);
     }
 
-    public function destroy(Client $client)
+    public function destroy(Client $client): void
     {
         $client->delete();
     }

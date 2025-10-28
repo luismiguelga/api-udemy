@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,4 +29,14 @@ Route::middleware('auth')->prefix('oauth')->group(function () {
     Route::get('/clients/{client}', [ClientController::class, 'edit']);
     Route::get('/clients/show/{client}', [ClientController::class, 'show']);
     Route::put('/clients/{client}', [ClientController::class, 'update']);
+});
+
+Route::get('api/tokens', [TokenController::class, 'index'])->name('tokens.index');
+
+Route::middleware('auth')->prefix('oauth')->group(function () {
+    Route::get('/access-tokens', [TokenController::class, 'index']);
+    Route::post('/access-tokens', [TokenController::class, 'store']);
+    Route::get('/access-tokens/scopes', [TokenController::class, 'getScopes']);
+    Route::delete('/access-tokens/{token}', [TokenController::class, 'destroy']);
+    Route::get('/access-tokens/{token}', [TokenController::class, 'show']);
 });

@@ -23,4 +23,5 @@ class Client extends PassportClient
         'grant_types' => 'array',
     ];
 
+    
 }
