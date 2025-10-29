@@ -53,7 +53,7 @@
             <tbody class="divide-y divide-gray-300">
               <tr v-for="values in tokens">
                 <td>
-                  @{{ values.name }}
+                  @{{ values.name ?? 'Nombre no registrado'}}
                 </td>
                 <td class="flex gap-4">
                   <a class="cursor-pointer pl-2 font-semibold hover:text-green-600" v-on:click="show(values.id)">Ver</a>
