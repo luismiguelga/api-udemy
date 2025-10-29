@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Utilities\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -23,7 +25,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return UserResource::make($user);
+        return Response::make(data: UserResource::make($user));
 
     }
 }

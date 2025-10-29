@@ -8,18 +8,19 @@ use App\Http\Requests\Api\Post\PostUpdateRequest;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Utilities\Response;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
-    public function index(): JsonResource
+    public function index(): JsonResponse
     {
         $posts = Post::paginate(3);
 
-        return PostCollection::make($posts);
+        return Response::make(data: PostCollection::make($posts));
     }
 
-    public function store(PostStoreRequest $request): JsonResource
+    public function store(PostStoreRequest $request): JsonResponse
     {
 
         $data = $request->validated();
@@ -28,29 +29,29 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
-        return PostResource::make($post);
+        return Response::make(data: PostResource::make($post));
     }
 
-    public function show(Post $post): JsonResource
+    public function show(Post $post): JsonResponse
     {
-        return PostResource::make($post);
+        return Response::make(data: PostResource::make($post));
     }
 
-    public function update(PostUpdateRequest $request, Post $post): JsonResource
+    public function update(PostUpdateRequest $request, Post $post): JsonResponse
     {
         $this->authorize('update', $post);
 
         $post->update($request->validated());
 
-        return PostResource::make($post);
+        return Response::make(data: PostResource::make($post));
     }
 
-    public function destroy(Post $post): JsonResource
+    public function destroy(Post $post): JsonResponse
     {
         $this->authorize('delete', $post);
 
         $post->delete();
 
-        return PostResource::make($post);
+        return Response::make(data: PostResource::make($post));
     }
 }

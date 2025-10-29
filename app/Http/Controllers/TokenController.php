@@ -45,7 +45,7 @@ class TokenController extends Controller
         return response()->json($token);
     }
 
-    public function getScopes()
+    public function getScopes(): JsonResponse
     {
         return response()->json(Passport::scopes());
     }

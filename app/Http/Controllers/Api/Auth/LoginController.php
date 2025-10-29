@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Utilities\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): ?JsonResponse
     {
         $data = $request->validate([
             'email' => 'required|string|email',
@@ -26,7 +28,8 @@ class LoginController extends Controller
         }
 
         if (Hash::check($data['password'], $user->password)) {
-            return UserResource::make($user);
+            return Response::make(data: UserResource::make($user));
         }
+        return null;
     }
 }

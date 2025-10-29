@@ -8,40 +8,41 @@ use App\Http\Requests\Api\Category\CategoryUpdateRequest;
 use App\Http\Resources\CategoriesCollection;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Utilities\Response;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    public function index(): JsonResource
+    public function index(): JsonResponse
     {
         $categories = Category::paginate(2);
 
-        return CategoriesCollection::make($categories);
+        return Response::make(data: CategoriesCollection::make($categories));
     }
 
-    public function store(CategoryStoreRequest $request): JsonResource
+    public function store(CategoryStoreRequest $request): JsonResponse
     {
         $category = Category::create($request->validated());
 
-        return CategoryResource::make($category);
+        return Response::make(data: CategoryResource::make($category));
     }
 
-    public function show(Category $category): JsonResource
+    public function show(Category $category): JsonResponse
     {
-        return CategoryResource::make($category);
+        return Response::make(data: CategoryResource::make($category));
     }
 
-    public function update(CategoryUpdateRequest $request, Category $category): JsonResource
+    public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
         $category->update($request->validated());
 
-        return CategoryResource::make($category);
+        return Response::make(data: CategoryResource::make($category));
     }
 
-    public function destroy(Category $category): JsonResource
+    public function destroy(Category $category): JsonResponse
     {
         $category->delete();
 
-        return CategoryResource::make($category);
+        return Response::make(data: CategoryResource::make($category));
     }
 }
