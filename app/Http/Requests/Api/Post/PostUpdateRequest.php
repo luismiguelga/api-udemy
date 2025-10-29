@@ -19,7 +19,6 @@ class PostUpdateRequest extends FormRequest
             'extract' => 'required',
             'body' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
         ];
     }
 }

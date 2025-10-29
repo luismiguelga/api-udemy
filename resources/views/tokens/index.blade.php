@@ -108,13 +108,13 @@
         },
         methods: {
           getScopes() {
-            axios.get('/oauth/access-tokens/scopes')
+            axios.get('/tokens/access-tokens/scopes')
               .then(response => {
                 this.scopes = response.data
               })
           },
           index() {
-            axios.get('/oauth/access-tokens')
+            axios.get('/tokens/access-tokens')
               .then(response => {
                 this.tokens = response.data
               })
@@ -122,7 +122,7 @@
           async store() {
             this.form.disabled = true;
             try {
-              const response = await axios.post('/oauth/access-tokens', this.form, {
+              const response = await axios.post('/tokens/access-tokens', this.form, {
                 headers: {
                   'Accept': 'application/json'
                 }
@@ -152,7 +152,7 @@
             }).then((result) => {
               if (result.isConfirmed) {
 
-                axios.delete('/oauth/access-tokens/' + token)
+                axios.delete('/tokens/access-tokens/' + token)
                   .then(() => {
 
                     Swal.fire("Eliminado!", "Se elimino el token correctamente", "success")
@@ -163,7 +163,7 @@
             })
           },
           show(token) {
-            axios.get('/oauth/access-tokens/' + token)
+            axios.get('/tokens/access-tokens/' + token)
               .then(response => {
                 this.showForm.open = true
                 this.showForm.id = response.data.id

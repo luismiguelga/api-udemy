@@ -33,7 +33,7 @@ Route::middleware('auth')->prefix('oauth')->group(function () {
 
 Route::get('api/tokens', [TokenController::class, 'index'])->name('tokens.index');
 
-Route::middleware('auth')->prefix('oauth')->group(function () {
+Route::middleware('auth')->prefix('tokens')->group(function () {
     Route::get('/access-tokens', [TokenController::class, 'index']);
     Route::post('/access-tokens', [TokenController::class, 'store']);
     Route::get('/access-tokens/scopes', [TokenController::class, 'getScopes']);

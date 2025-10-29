@@ -41,7 +41,11 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $post->update($request->validated());
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->user()->id;
+
+        $post->update($data);
 
         return Response::make(data: PostResource::make($post));
     }
